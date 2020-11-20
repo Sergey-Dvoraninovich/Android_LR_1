@@ -1,19 +1,16 @@
 package com.example.myapplication;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.Toast;
 
-public class activity_weight extends AppCompatActivity implements WeightKeyboardFragment.OnFragmentInteractionListener, WeightFragment.OnFragmentSellListener{
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
-    private Conversion conv =  conv = new Conversion("Килограммы", "Фунты", "Унции", 2.2046226218, 35.2739619496, 16);
+public class activity_weight extends AppCompatActivity{
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    private Conversion conv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,27 +18,22 @@ public class activity_weight extends AppCompatActivity implements WeightKeyboard
         Bundle arguments = getIntent().getExtras();
         if(arguments != null){
             this.conv = (Conversion) arguments.getSerializable(Conversion.class.getSimpleName());
+            ConversionViewModel model = new ViewModelProvider(this).get(ConversionViewModel.class);
+            model.select(this.conv);
+            SaveTopViewModel model_order = new ViewModelProvider(this).get(SaveTopViewModel.class);
+            if (model_order.selected.getValue() == null)
+               model_order.select(0);
+            SaveDownViewModel model_order_down = new ViewModelProvider(this).get(SaveDownViewModel.class);
+            if (model_order_down.selected.getValue() == null)
+                model_order_down.select(1);
+            SaveViewModel model_string = new ViewModelProvider(this).get(SaveViewModel.class);
+            if (model_string.selected.getValue() == null)
+                model_string.select("");
+            SharedViewModel model_share = new ViewModelProvider(this).get(SharedViewModel.class);
+            model_share.select(null);
         }
+
         setContentView(R.layout.activity_weight);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override
-    public void onFragmentInteraction(String link) {
-        WeightFragment fragment = (WeightFragment) getFragmentManager()
-                .findFragmentById(R.id.fragment);
-        if (fragment != null && fragment.isInLayout()) {
-            fragment.setText(link);
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override
-    public void onFragmentSell() {
-        WeightFragment fragment = (WeightFragment) getFragmentManager()
-                .findFragmentById(R.id.fragment);
-        if (fragment != null) {
-            fragment.setData(this.conv);
-        }
-    }
 }

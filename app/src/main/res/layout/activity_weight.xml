@@ -15,15 +15,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <fragment
-            android:id="@+id/fragment"
-            android:name="com.example.myapplication.WeightFragment"
+        <fragment android:name="com.example.myapplication.WeightFragment"
+            android:id="@+id/WeightFragmnet"
             android:layout_width="match_parent"
             android:layout_height="385dp" />
 
-        <fragment
-            android:id="@+id/fragment_keyboard"
-            android:name="com.example.myapplication.WeightKeyboardFragment"
+        <fragment android:name="com.example.myapplication.WeightKeyboardFragment"
+            android:id="@+id/FragmentWeightKeyboard"
             android:layout_width="match_parent"
             android:layout_height="370dp" />
 

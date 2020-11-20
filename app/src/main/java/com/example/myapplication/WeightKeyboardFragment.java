@@ -3,11 +3,15 @@ package com.example.myapplication;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.content.Context;
+import android.widget.AdapterView;
 import android.widget.Button;
 import java.util.Date;
 
@@ -16,9 +20,10 @@ import java.util.Date;
  * Use the {@link WeightKeyboardFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class WeightKeyboardFragment extends android.app.Fragment {
+public class WeightKeyboardFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
+    //private OnFragmentInteractionListener mListener;
+    private SharedViewModel model;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -64,116 +69,106 @@ public class WeightKeyboardFragment extends android.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weight_keyboard, container, false);
+
+
+        model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+
         Button button0 = (Button) view.findViewById(R.id.button_num_0);
         button0.setOnClickListener(new View.OnClickListener() {
-            @Override
+        @Override
             public void onClick(View v) {
-                updateDetail("0");
+                model.select("0");
             }
         });
+
         Button button1 = (Button) view.findViewById(R.id.button_num_1);
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateDetail("1");
+                model.select("1");
             }
         });
+
         Button button2 = (Button) view.findViewById(R.id.button_num_2);
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateDetail("2");
+                model.select("2");
             }
         });
+
         Button button3 = (Button) view.findViewById(R.id.button_num_3);
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateDetail("3");
+                model.select("3");
             }
         });
+
         Button button4 = (Button) view.findViewById(R.id.button_num_4);
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateDetail("4");
+                model.select("4");
             }
         });
+
         Button button5 = (Button) view.findViewById(R.id.button_num_5);
         button5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateDetail("5");
+                model.select("5");
             }
         });
+
         Button button6 = (Button) view.findViewById(R.id.button_num_6);
         button6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateDetail("6");
+                model.select("6");
             }
         });
+
         Button button7 = (Button) view.findViewById(R.id.button_num_7);
         button7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateDetail("7");
+                model.select("7");
             }
         });
+
         Button button8 = (Button) view.findViewById(R.id.button_num_8);
         button8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateDetail("8");
+                model.select("8");
             }
         });
+
         Button button9 = (Button) view.findViewById(R.id.button_num_9);
         button9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateDetail("9");
+                model.select("9");
             }
         });
-        Button dot_button = (Button) view.findViewById(R.id.button_dot);
-        dot_button.setOnClickListener(new View.OnClickListener() {
+
+        Button button_dot = (Button) view.findViewById(R.id.button_dot);
+        button_dot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateDetail(".");
+                model.select(".");
             }
         });
+
         Button button_delete = (Button) view.findViewById(R.id.button_delete);
         button_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateDetail("|");
+                model.select("|");
             }
         });
 
-
-        // Inflate the layout for this fragment
         return view;
-        //return inflater.inflate(R.layout.fragment_weight_keyboard, container, false);
-    }
-
-    interface OnFragmentInteractionListener {
-
-        void onFragmentInteraction(String link);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            mListener = (OnFragmentInteractionListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " должен реализовывать интерфейс OnFragmentInteractionListener");
-        }
-    }
-    public void updateDetail(String data) {
-        // генерируем некоторые данные
-        String curDate = data;
-        // Посылаем данные Activity
-        mListener.onFragmentInteraction(curDate);
     }
 }

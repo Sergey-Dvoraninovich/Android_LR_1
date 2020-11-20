@@ -1,54 +1,70 @@
 package com.example.myapplication;
 
+import android.content.ClipData;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+
 import java.io.Serializable;
 
 public class Conversion implements Serializable {
 
-    private String str_value_1;
-    private String str_value_2;
-    private String str_value_3;
-    private double conv_1_to_2;
-    private double conv_1_to_3;
-    private double conv_2_to_3;
+    private String[] values;
+    private double[][] conv_kf;
+    private String s_top;
+    private String s_down;
 
-    public Conversion(String str_value_1, String str_value_2, String str_value_3,
-                      double val1, double val2, double val3) {
-        this.str_value_1 = str_value_1;
-        this.str_value_2 = str_value_2;
-        this.str_value_3 = str_value_3;
-        this.conv_1_to_2 = val1;
-        this.conv_1_to_3 = val2;
-        this.conv_2_to_3 = val3;
+    public Conversion(String[] values, double[] conv_kf)
+    {
+        this.values = values;
+        this.conv_kf = new double[values.length][values.length];
+        for (int i = 0; i < values.length; i++)
+            for (int j = 0; j < values.length; j++)
+                this.conv_kf[i][j] = 1.0;
+        int k = 0;
+        for (int i = 0; i < values.length; i++)
+            for (int j = i + 1; j < values.length; j++) {
+                if (k < conv_kf.length) {
+                    this.conv_kf[i][j] = conv_kf[k];
+                    this.conv_kf[j][i] = 1.0 / conv_kf[k];
+                    k++;
+                }
+            }
+        this.s_top = values[0];
+        this.s_down = values[1];
     }
 
-    public double Convert(String str_val_1, String str_val_2, double value)
+    public Conversion(String[] values, double[][] conv_kf)
     {
-        if ((str_val_1 == this.str_value_1) && (str_val_2 == this.str_value_2))
-            return value * conv_1_to_2;
-        if ((str_val_2 == this.str_value_1) && (str_val_1 == this.str_value_2))
-            return value * (1 / conv_1_to_2);
+        this.values = values;
+        this.conv_kf = conv_kf;
+        this.s_top = values[0];
+        this.s_down = values[1];
+    }
 
-        if ((str_val_1 == this.str_value_1) && (str_val_2 == this.str_value_3))
-            return value * conv_1_to_3;
-        if ((str_val_2 == this.str_value_1) && (str_val_1 == this.str_value_3))
-            return value * (1 / conv_1_to_3);
-
-        if ((str_val_1 == this.str_value_2) && (str_val_2 == this.str_value_3))
-            return value * conv_2_to_3;
-        if ((str_val_2 == this.str_value_2) && (str_val_1 == this.str_value_3))
-            return  value * conv_2_to_3;
-
-        return value;
+    public double Convert(String val_1, String val_2, double value)
+    {
+        int i = 0;
+        for (int k = 0; k < values.length; k++)
+            if (values[k].equals(val_1))
+                i = k;
+        int j = 0;
+        for (int k = 0; k < values.length; k++)
+            if (values[k].equals(val_2))
+                j = k;
+        return this.conv_kf[i][j] * value;
     }
 
     public String[] getValues()
     {
-        return new String[] {this.str_value_1, this.str_value_2, this.str_value_3};
+        return this.values;
     }
 
-    public String getStringValues()
+    public void setPosition(String s_top, String s_down)
     {
-        return this.str_value_1 + " " + this.str_value_2 + " " + this.str_value_3;
+        this.s_top = s_top;
+        this.s_down = s_down;
     }
-
 }
+
